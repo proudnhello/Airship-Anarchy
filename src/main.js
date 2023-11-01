@@ -1,8 +1,8 @@
 /*
 Moore Macauley
-
-Comandeered assets:
-Airship by natebot13, found here: https://opengameart.org/content/airship
+Airship Anarchy
+1 as of writing (here's to hoping I remember to update this)
+Something about how the airship has multiple hitboxes
 */
 
 let config = {
