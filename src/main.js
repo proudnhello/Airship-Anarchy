@@ -35,4 +35,4 @@ let w = game.config.width;
 let h = game.config.height;
 
 // Reserving keys
-let keyF, keyR, keyLEFT, keyRIGHT;
+let cursors

@@ -31,16 +31,15 @@ class Menu extends Phaser.Scene{
         menuConfig.color = '#000'
         this.add.text(game.config.width/2, game.config.height/2 + 100, 'Press ← or → to start', menuConfig).setOrigin(0.5);
         
-        // Key def
-        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        // Key def (only needs arrow keys)
+        cursors = this.input.keyboard.createCursorKeys()
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+        if (cursors.left.isDown) {
           this.scene.start('playScene');    
         }
-        if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
+        if (cursors.right.isDown) {
           this.scene.start('playScene');    
         }
       }
