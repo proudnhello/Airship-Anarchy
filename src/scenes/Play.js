@@ -22,7 +22,12 @@ class Play extends Phaser.Scene{
         this.left = this.physics.add.body(0, 0, this.ship.width/3, this.ship.height)
         this.center = this.physics.add.body(0, 0, this.ship.width/3, this.ship.height);
         this.right = this.physics.add.body(0, 0, this.ship.width/3, this.ship.height);
-        
+
+        this.left.setImmovable(true)
+        this.center.setImmovable(true)
+        this.right.setImmovable(true)
+
+        this.test = new Cannonball(this, 100);
     }
 
     update(){
