@@ -13,13 +13,24 @@ class Play extends Phaser.Scene{
         this.rightIntact = 2;
         this.ACCEL = 2000;
 
-        // creating the ship's center
+        // creating the ship
         this.ship = this.physics.add.sprite(w/2, h/2, "airship", 0)
         this.ship.setImmovable(true);
         this.ship.setCollideWorldBounds(true);
+
+        // creating the ship's hitboxes
+        this.left = this.physics.add.body(0, 0, this.ship.width/3, this.ship.height)
+        this.center = this.physics.add.body(0, 0, this.ship.width/3, this.ship.height);
+        this.right = this.physics.add.body(0, 0, this.ship.width/3, this.ship.height);
+        
     }
 
     update(){
+        // moving the ship's hitboxes to match the ship (this is probably bad, but idk how to make this work any other way)
+        this.left.position.set(this.ship.x - this.ship.width/3 - this.left.halfWidth, this.ship.y - this.left.halfHeight)
+        this.center.position.set(this.ship.x - this.center.halfWidth, this.ship.y - this.center.halfHeight)
+        this.right.position.set(this.ship.x + this.ship.width/3 - this.right.halfWidth, this.ship.y - this.right.halfHeight)
+
         if(!this.gameOver){
             // Player movement
             let shipVector = new Phaser.Math.Vector2(0, 0);
