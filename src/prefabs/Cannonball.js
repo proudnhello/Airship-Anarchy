@@ -1,18 +1,17 @@
 class Cannonball extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, velocity){
         super(scene, w/2, 0, 'cannonball'); 
-        //this.setPosition(Phaser.Math.Between(this.width/2, game.config.height - this.width/2), h + this.height,)
+        this.setPosition(Phaser.Math.Between(0, w), 0)
         this.scene = scene;
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
-        this.setImmovable(true);
         this.setCircle(this.width/2)
 
-        this.setVelocity(0, velocity)
+        this.setVelocity(Phaser.Math.Between(-velocity, velocity), velocity)
     }
 
     update(){
-        if(this.y > h){
+        if(this.y > h + this.height){
             this.destroy(true)
         }
     }

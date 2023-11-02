@@ -14,7 +14,23 @@ class Play extends Phaser.Scene{
         // variables used for invincibility frames
         this.leftDamagable = true
         this.rightDamagable = true
+
+        // constant for ship acceleration
         this.ACCEL = 2000;
+
+        // determines the velocity of the cannonballs, the speed at which they spawn, and the number of generators
+        this.cannonballVelocity = 50
+        this.cannonballDelay = 2000
+        this.generators = 0
+
+        // determines how much faster the cannonballs get and how much faster they spawn intially
+        this.cannonballVelocityStep = 10
+        this.cannonballDelayStep = 50
+
+        // sets maximum velocity, mimium delay, and maximum number of cannonball generators
+        this.DELAY_MIN = 400
+        this.VEL_MAX = 100
+        this.GEN_MAX = 2
 
         // creating the ship
         this.ship = this.physics.add.sprite(w/2, h/2, "airship", 0)
@@ -35,9 +51,8 @@ class Play extends Phaser.Scene{
         })
 
         this.cannonballGenerator = this.time.addEvent({
-            delay: 2000,
+            delay: this.cannonballDelay,
             callback: this.createCannonballs,
-            loop:true,
             callbackScope:this
         })
 
@@ -90,10 +105,39 @@ class Play extends Phaser.Scene{
         }
     }
 
-    // Creates one (1) cannonball
-    // TODO: Make this not shit
+    // Creates cannonballs indefinitely, changing the rate at which they spawn
     createCannonballs(){
-        this.cannonGroup.add((new Cannonball(this, 50)))
+        this.cannonGroup.add((new Cannonball(this, this.cannonballVelocity)))
+        // Sets the next delay step. As the delay gets less, the amount it is reduced by decreaces as well
+        if(this.cannonballDelay > this.DELAY_MIN){
+            this.cannonballDelay -= this.cannonballDelayStep
+            this.cannonballDelayStep = this.cannonballDelay / 20
+        }else if(this.generators < this.GEN_MAX){
+            this.cannonballDelay *= 2
+            this.cannonballDelayStep
+            this.generators += 1
+            this.cannonballGenerator = this.time.addEvent({
+                delay: this.cannonballDelay + Phaser.Math.Between(0, this.cannonballDelay),
+                callback: this.simpleCannonballGenerator,
+                callbackScope:this
+            })
+        }
+        this.cannonballGenerator = this.time.addEvent({
+            delay: this.cannonballDelay,
+            callback: this.createCannonballs,
+            callbackScope:this
+        })
+        console.log(this.generators, " ", this.cannonballDelay)
+    }
+
+    // A simpler cannonball generator, that does not change the difficulty as it spawns in balls
+    simpleCannonballGenerator(){
+        this.cannonGroup.add((new Cannonball(this, this.cannonballVelocity)))
+        this.cannonballGenerator = this.time.addEvent({
+            delay: this.cannonballDelay,
+            callback: this.createCannonballs,
+            callbackScope:this
+        })
     }
 
     // Ends the game, simple enough
