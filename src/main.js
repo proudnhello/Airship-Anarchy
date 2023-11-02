@@ -1,8 +1,11 @@
 /*
 Moore Macauley
 Airship Anarchy
-1 as of writing (here's to hoping I remember to update this)
+9 hours of work as of writing (here's to hoping I remember to update this)
+Learning how to use gimp to create art assets was *not fun*, spent a good three hours on that if you include the time I wasted trying to make pixel art in ms paint. 
+I think they all look okay though. Not good, but servicable
 Something about how the airship has multiple hitboxes
+Something about shmup/endless runner hybrid
 */
 
 let config = {
@@ -13,6 +16,7 @@ let config = {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     scene: [Load, Menu, Play],
+    pixelArt: true,
     physics: {
         default: 'arcade',
         arcade: {

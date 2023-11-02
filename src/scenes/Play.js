@@ -9,8 +9,11 @@ class Play extends Phaser.Scene{
 
         this.gameOver = false;
         // This tracks the health of the left and right segments
-        this.leftIntact = 2;
-        this.rightIntact = 2;
+        this.leftIntact = true;
+        this.rightIntact = true;
+        // variables used for invincibility frames
+        this.leftDamagable = true
+        this.rightDamagable = true
         this.ACCEL = 2000;
 
         // creating the ship
@@ -27,7 +30,17 @@ class Play extends Phaser.Scene{
         this.center.setImmovable(true)
         this.right.setImmovable(true)
 
-        this.test = new Cannonball(this, 100);
+        this.cannonGroup = this.add.group({
+            runChildUpdate:true
+        })
+
+        this.cannonballGenerator = this.time.addEvent({
+            delay: 2000,
+            callback: this.createCannonballs,
+            loop:true,
+            callbackScope:this
+        })
+
     }
 
     update(){
@@ -67,9 +80,77 @@ class Play extends Phaser.Scene{
             if((y < 0 && shipVector.y < 0) || (y > 0 && shipVector.y > 0)){
                 yMod = Math.ceil(Math.abs(y)/20);
             }
-            // this should (hopefully) keep all the parts of the ship together
             this.ship.setAcceleration((this.ACCEL * shipVector.x)/xMod, (this.ACCEL * shipVector.y)/yMod)
+
+            // Deal with collisions between cannon balls and all parts of the ship
+            // Lot of redundant code, but such is life
+            this.physics.world.overlap(this.left, this.cannonGroup, this.endGame, this.leftCollide, this)
+            this.physics.world.overlap(this.center, this.cannonGroup, this.endGame, null, this)
+            this.physics.world.overlap(this.right, this.cannonGroup, this.endGame, this.rightCollide, this)
         }
+    }
+
+    // Creates one (1) cannonball
+    // TODO: Make this not shit
+    createCannonballs(){
+        this.cannonGroup.add((new Cannonball(this, 50)))
+    }
+
+    // Ends the game, simple enough
+    endGame(){
+        this.ship.destroy(true)
+        this.gameOver = true
+        console.log("Simply an issue of skill")
+    }
+
+    // If left is intact, changes the tracker of leftIntact to false, then returns false
+    // If it is not, return true, which will cause the second callback function to be used in the colision event, which ends the game
+    leftCollide(){
+        if(this.leftDamagable){
+            console.log("Left owie")
+            if(this.leftIntact){
+                this.leftIntact = false;
+                this.leftDamagable = false;
+                this.leftCountdown = this.time.addEvent({
+                    delay:1000,
+                    callback: this.leftInvincibility,
+                    callbackScope: this
+                })
+                return false
+            }else{
+                return true
+            }
+        }
+        return false
+    }
+
+    // see leftCollide()
+    rightCollide(){
+        if(this.rightDamagable){
+            console.log("Right owie")
+            this.rightDamagable = false;
+            this.rightCountdown = this.time.addEvent({
+                delay:1000,
+                callback: this.rightInvincibility,
+                callbackScope: this
+            })
+            if(this.rightIntact){
+                this.rightIntact = false;
+                return false
+            }else{
+                return true
+            }
+        }
+        return false
+    }
+
+    // Used to proivde invincibility frames for the left side
+    leftInvincibility(){
+        this.leftDamagable = true
+    }
+    // Used to proivde invincibility frames for the right side
+    rightInvincibility(){
+        this.rightDamagable = true
     }
 
 
