@@ -18,8 +18,7 @@ class Load extends Phaser.Scene {
 
         this.load.path = './assets/';
         // load graphics assets
-        this.load.image('center', 'sprites/airshipCenter.png');
-        this.load.image('edge', 'sprites/airshipEdge.png');
+        this.load.image('airship', 'sprites/airship.png');
         // load audio assets
         // load font
     }

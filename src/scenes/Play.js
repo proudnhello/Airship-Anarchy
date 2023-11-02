@@ -14,18 +14,9 @@ class Play extends Phaser.Scene{
         this.ACCEL = 2000;
 
         // creating the ship's center
-        this.ship = this.physics.add.sprite(w/2, h/2, "center", 0)
+        this.ship = this.physics.add.sprite(w/2, h/2, "airship", 0)
         this.ship.setImmovable(true);
         this.ship.setCollideWorldBounds(true);
-
-        //creating the sides of the ship
-        this.right = this.physics.add.sprite(w/2 + this.ship.width, h/2, "edge", 0)
-        this.left = this.physics.add.sprite(w/2 - this.ship.width, h/2, "edge", 0)
-        this.left.flipX = true
-        this.left.setImmovable(true)
-        this.left.setCollideWorldBounds(true)
-        this.right.setImmovable(true)
-        this.right.setCollideWorldBounds(true)
     }
 
     update(){
@@ -62,8 +53,6 @@ class Play extends Phaser.Scene{
             }
             // this should (hopefully) keep all the parts of the ship together
             this.ship.setAcceleration((this.ACCEL * shipVector.x)/xMod, (this.ACCEL * shipVector.y)/yMod)
-            this.left.setAcceleration((this.ACCEL * shipVector.x)/xMod, (this.ACCEL * shipVector.y)/yMod)
-            this.right.setAcceleration((this.ACCEL * shipVector.x)/xMod, (this.ACCEL * shipVector.y)/yMod)
         }
     }
 
