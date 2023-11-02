@@ -20,8 +20,8 @@ class Load extends Phaser.Scene {
         // load graphics assets
         this.load.image('airship', 'airship.png');
         this.load.image('cannonball', 'cannonball.png')
+        this.load.image('sky', 'sky.png')
         // load audio assets
-        // load font
     }
 
     create() {

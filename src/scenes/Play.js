@@ -4,7 +4,10 @@ class Play extends Phaser.Scene{
     }
 
     create(){
-        this.cameras.main.setBackgroundColor(0x89CFF0);
+        // creates background, and controlls how fast it scrolls
+        this.sky = this.add.tileSprite(0, 0, w, h, 'sky').setOrigin(0,0)
+        this.scrollSpeed = .5
+
         cursors = this.input.keyboard.createCursorKeys()
 
         this.gameOver = false;
@@ -24,12 +27,10 @@ class Play extends Phaser.Scene{
         this.generators = 0
 
         // determines how much faster the cannonballs get and how much faster they spawn intially
-        this.cannonballVelocityStep = 10
         this.cannonballDelayStep = 50
 
         // sets maximum velocity, mimium delay, and maximum number of cannonball generators
         this.DELAY_MIN = 400
-        this.VEL_MAX = 100
         this.GEN_MAX = 2
 
         // creating the ship
@@ -63,6 +64,7 @@ class Play extends Phaser.Scene{
         this.left.position.set(this.ship.x - this.ship.width/3 - this.left.halfWidth, this.ship.y - this.left.halfHeight)
         this.center.position.set(this.ship.x - this.center.halfWidth, this.ship.y - this.center.halfHeight)
         this.right.position.set(this.ship.x + this.ship.width/3 - this.right.halfWidth, this.ship.y - this.right.halfHeight)
+        this.sky.tilePositionY -= this.scrollSpeed
 
         if(!this.gameOver){
             // Player movement
