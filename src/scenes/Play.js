@@ -107,6 +107,21 @@ class Play extends Phaser.Scene{
             })
         })
 
+        // sets up menu font
+        let menuConfig = {
+            fontFamily: 'Fantasy',
+            fontSize: '28px',
+            color: '#843605',
+            align: 'center',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0
+        }
+        // creates game over text off screen
+        this.death = this.add.text(-100, -100, 'THOU HATH PERISHED\n Press space to return to menu', menuConfig).setOrigin(0.5);
+
     }
 
     update(){
@@ -165,11 +180,22 @@ class Play extends Phaser.Scene{
             }else{
                 this.ship.play('both', true)
             }
+        }else{
+            this.death.setPosition(w/2, h/2)
+            this.ship.setAcceleration(0)
+            this.ship.setVelocity(0, 20)
+            this.ship.setCollideWorldBounds(false)
+            if(cursors.space.isDown){
+                this.scene.start('menuScene');    
+            }
         }
     }
 
     // Creates cannonballs indefinitely, changing the rate at which they spawn
     createCannonballs(){
+        if(this.gameOver){
+            return
+        }
         this.cannonGroup.add((new Cannonball(this, this.cannonballVelocity)))
         // Sets the next delay step. As the delay gets less, the amount it is reduced by decreaces as well
         if(this.cannonballDelay > this.DELAY_MIN){
@@ -177,7 +203,6 @@ class Play extends Phaser.Scene{
             this.cannonballDelayStep = this.cannonballDelay / 20
         }else if(this.generators < this.GEN_MAX){
             this.cannonballDelay *= 2
-            this.cannonballDelayStep
             this.generators += 1
             this.cannonballGenerator = this.time.addEvent({
                 delay: this.cannonballDelay + Phaser.Math.Between(0, this.cannonballDelay),
@@ -195,6 +220,9 @@ class Play extends Phaser.Scene{
 
     // A simpler cannonball generator, that does not change the difficulty as it spawns in balls
     simpleCannonballGenerator(){
+        if(this.gameOver){
+            return
+        }
         this.cannonGroup.add((new Cannonball(this, this.cannonballVelocity)))
         this.cannonballGenerator = this.time.addEvent({
             delay: this.cannonballDelay,
@@ -205,16 +233,13 @@ class Play extends Phaser.Scene{
 
     // Ends the game, simple enough
     endGame(){
-        this.ship.destroy(true)
         this.gameOver = true
-        console.log("Simply an issue of skill")
     }
 
     // If left is intact, changes the tracker of leftIntact to false, then returns false
     // If it is not, return true, which will cause the second callback function to be used in the colision event, which ends the game
     leftCollide(){
         if(this.leftDamagable){
-            console.log("Left owie")
             if(this.leftIntact){
                 this.leftIntact = false;
                 this.leftDamagable = false;
@@ -234,7 +259,6 @@ class Play extends Phaser.Scene{
     // see leftCollide()
     rightCollide(){
         if(this.rightDamagable){
-            console.log("Right owie")
             this.rightDamagable = false;
             this.rightCountdown = this.time.addEvent({
                 delay:1000,
