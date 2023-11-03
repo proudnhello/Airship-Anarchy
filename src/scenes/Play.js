@@ -47,6 +47,7 @@ class Play extends Phaser.Scene{
         this.center.setImmovable(true)
         this.right.setImmovable(true)
 
+        // Begin generating cannonballs
         this.cannonGroup = this.add.group({
             runChildUpdate:true
         })
@@ -57,6 +58,19 @@ class Play extends Phaser.Scene{
             callbackScope:this
         })
 
+        // create the animations
+        this.anims.create({
+            key:'undamaged',
+            frameRate:4,
+            repeat:-1,
+            frames: this.anims.generateFrameNames('airship', {
+                start: 1,
+                end:3,
+                zeroPad:3,
+                prefix:'airship'
+            })
+        })
+
     }
 
     update(){
@@ -65,6 +79,8 @@ class Play extends Phaser.Scene{
         this.center.position.set(this.ship.x - this.center.halfWidth, this.ship.y - this.center.halfHeight)
         this.right.position.set(this.ship.x + this.ship.width/3 - this.right.halfWidth, this.ship.y - this.right.halfHeight)
         this.sky.tilePositionY -= this.scrollSpeed
+
+        this.ship.play('undamaged', true)
 
         if(!this.gameOver){
             // Player movement
