@@ -9,9 +9,8 @@ class Menu extends Phaser.Scene{
 
       // sets up menu font
       let menuConfig = {
-          fontFamily: 'Courier',
+          fontFamily: 'Fantasy',
           fontSize: '28px',
-          backgroundColor: '#F3B141',
           color: '#843605',
           align: 'right',
           padding: {
@@ -22,13 +21,13 @@ class Menu extends Phaser.Scene{
       }
 
       // Menu text
-      this.add.text(game.config.width/2, game.config.height/2 - 100, 'AIRSHIP ANARCHY', menuConfig).setOrigin(0.5);
-      this.add.text(game.config.width/2, game.config.height/2, 'Use arrow keys to move', menuConfig).setOrigin(0.5);
+      this.add.text(w/2, h/2 - 150, 'AIRSHIP ANARCHY', menuConfig).setOrigin(0.5);
+      this.add.text(w/2, h/2 - 50, 'Use arrow keys to move, dodge the cannonballs', menuConfig).setOrigin(0.5);
 
       // Green menu text
-      menuConfig.backgroundColor = '#00FF00'
       menuConfig.color = '#000'
-      this.add.text(game.config.width/2, game.config.height/2 + 100, 'Press ← or → to start', menuConfig).setOrigin(0.5);
+      this.add.text(w/2, h/2 + 50, 'Press ← or → to start', menuConfig).setOrigin(0.5);
+      this.add.text(w/2, h/2 + 150, 'Press ↑ or ↓ to view credits', menuConfig).setOrigin(0.5);
         
       // Key def (only needs arrow keys)
       cursors = this.input.keyboard.createCursorKeys()
@@ -40,6 +39,12 @@ class Menu extends Phaser.Scene{
         }
         if (cursors.right.isDown) {
           this.scene.start('playScene');    
+        }
+        if (cursors.up.isDown) {
+          this.scene.start('creditsScene');    
+        }
+        if (cursors.down.isDown) {
+          this.scene.start('creditsScene');    
         }
     }
   }

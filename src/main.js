@@ -5,7 +5,7 @@ Airship Anarchy
 Learning how to use gimp to create art assets was *not fun*, spent a good three hours on that if you include the time I wasted trying to make pixel art in ms paint. 
 I think they all look okay though. Not good, but servicable
 Something about how the airship has multiple hitboxes
-Something about shmup/endless runner hybrid
+Something about shmup/endless runner hybrid, and maybe that thing about the music if i can get it to work
 */
 
 let config = {
@@ -15,7 +15,7 @@ let config = {
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    scene: [Load, Menu, Play],
+    scene: [Load, Menu, Play, Credits],
     pixelArt: true,
     physics: {
         default: 'arcade',
