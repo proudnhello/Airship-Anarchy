@@ -71,6 +71,42 @@ class Play extends Phaser.Scene{
             })
         })
 
+        this.anims.create({
+            key:'left',
+            frameRate:4,
+            repeat:-1,
+            frames: this.anims.generateFrameNames('airship', {
+                start: 7,
+                end:9,
+                zeroPad:3,
+                prefix:'airship'
+            })
+        })
+
+        this.anims.create({
+            key:'right',
+            frameRate:4,
+            repeat:-1,
+            frames: this.anims.generateFrameNames('airship', {
+                start: 4,
+                end:6,
+                zeroPad:3,
+                prefix:'airship'
+            })
+        })
+
+        this.anims.create({
+            key:'both',
+            frameRate:4,
+            repeat:-1,
+            frames: this.anims.generateFrameNames('airship', {
+                start: 10,
+                end:12,
+                zeroPad:3,
+                prefix:'airship'
+            })
+        })
+
     }
 
     update(){
@@ -79,8 +115,6 @@ class Play extends Phaser.Scene{
         this.center.position.set(this.ship.x - this.center.halfWidth, this.ship.y - this.center.halfHeight)
         this.right.position.set(this.ship.x + this.ship.width/3 - this.right.halfWidth, this.ship.y - this.right.halfHeight)
         this.sky.tilePositionY -= this.scrollSpeed
-
-        this.ship.play('undamaged', true)
 
         if(!this.gameOver){
             // Player movement
@@ -120,6 +154,17 @@ class Play extends Phaser.Scene{
             this.physics.world.overlap(this.left, this.cannonGroup, this.endGame, this.leftCollide, this)
             this.physics.world.overlap(this.center, this.cannonGroup, this.endGame, null, this)
             this.physics.world.overlap(this.right, this.cannonGroup, this.endGame, this.rightCollide, this)
+
+            // display appropriate animations based on damage
+            if(this.leftIntact && this.rightIntact){
+                this.ship.play('undamaged', true)
+            }else if(this.rightIntact){
+                this.ship.play('left', true)
+            }else if(this.leftIntact){
+                this.ship.play('right', true)
+            }else{
+                this.ship.play('both', true)
+            }
         }
     }
 
