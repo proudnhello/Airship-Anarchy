@@ -22,8 +22,9 @@ class Load extends Phaser.Scene {
         this.load.image('sky', 'sky.png')
         this.load.path = './assets/atlas/';
         this.load.atlas('airship', 'airship.png', 'airship.json');
-
         // load audio assets
+        this.load.path = './assets/music/';
+        this.load.audio('music', 'hotmk.mp3')
     }
 
     create() {

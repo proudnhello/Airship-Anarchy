@@ -10,6 +10,15 @@ class Play extends Phaser.Scene{
 
         cursors = this.input.keyboard.createCursorKeys()
 
+        // start playing the music
+        this.music = this.sound.add('music', {
+            mute: false,
+            volume: .5,
+            rate: 1,
+            loop: true
+        })
+        this.music.play()
+
         this.gameOver = false;
         // This tracks the health of the left and right segments
         this.leftIntact = true;
@@ -198,6 +207,8 @@ class Play extends Phaser.Scene{
             this.ship.setVelocity(0, 20)
             this.ship.setCollideWorldBounds(false)
             this.ship.play('destroyed', true)
+            this.cannonGroup.destroy(true, true)
+            this.music.stop(true)
             if(cursors.space.isDown){
                 this.scene.start('menuScene');    
             }

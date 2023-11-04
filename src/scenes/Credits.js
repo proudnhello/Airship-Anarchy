@@ -10,7 +10,7 @@ class Credits extends Phaser.Scene {
         cursors = this.input.keyboard.createCursorKeys()
 
         let creditsConfig = {
-            fontSize: '28px',
+            fontSize: '16px',
             color: '#000000',
             align: 'center',
             padding: {
@@ -20,7 +20,12 @@ class Credits extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        this.add.text(w/2, h/2, 'Press any arrow key to return to menu\n Code and visual assets done by Moore Macauley\n', creditsConfig).setOrigin(0.5);
+        this.add.text(w/2, h/2, `Press any arrow key to return to menu\n
+        Code and visual assets done by Moore Macauley\n
+        Hall of the Mountain King by Kevin MacLeod  •  Edvard Grieg | http://incompetech.com\n
+        Music promoted by https://www.free-stock-music.com\n
+        Creative Commons / Attribution 4.0 International (CC BY 4.0)\n
+        https://creativecommons.org/licenses/by/4.0/`, creditsConfig).setOrigin(0.5);
     }
 
     update(){
