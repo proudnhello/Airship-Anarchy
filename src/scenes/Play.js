@@ -8,16 +8,41 @@ class Play extends Phaser.Scene{
         this.sky = this.add.tileSprite(0, 0, w, h, 'sky').setOrigin(0,0)
         this.scrollSpeed = .5
 
+        this.score = 0
+        this.scoreIncrement = 1
+
+        let scoreConfig = {
+            fontSize: '26px',
+            color: '#000000',
+            align: 'left',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0
+        }
+
+        this.scoreLeft = this.add.text(0, 0, this.score, scoreConfig);
+
+        this.newCycle = false
+
         cursors = this.input.keyboard.createCursorKeys()
 
         // start playing the music
         this.music = this.sound.add('music', {
             mute: false,
-            volume: .5,
+            volume: .25,
             rate: 1,
-            loop: true
+            loop: true,
         })
         this.music.play()
+
+        // start a new cycles when the song loops
+        this.cycles = this.time.addEvent({
+            delay: 147000,
+            callback: this.endCycle,
+            callbackScope:this
+        })
         
         // Create sfx
         this.damageSound = this.sound.add('damageSound', {
@@ -44,15 +69,20 @@ class Play extends Phaser.Scene{
         this.ACCEL = 2000;
 
         // determines the velocity of the cannonballs, the speed at which they spawn, and the number of generators
-        this.cannonballVelocity = 50
-        this.cannonballDelay = 2000
-        this.generators = 0
+        this.CANNONBALL_VELOICTY = 50
+        this.CANNONBALL_DELAY = 1000
+        this.GENERATORS = 0
+
+        this.cannonballVelocity = this.CANNONBALL_VELOICTY
+        this.cannonballDelay = this.CANNONBALL_DELAY
+        this.cannonballDelayStepStep = 150
+        this.generators = this.GENERATORS
 
         // determines how much faster the cannonballs get and how much faster they spawn intially
-        this.cannonballDelayStep = 50
+        this.cannonballDelayStep = this.cannonballDelay / this.cannonballDelayStepStep
 
         // sets maximum velocity, mimium delay, and maximum number of cannonball generators
-        this.DELAY_MIN = 400
+        this.DELAY_MIN = 600
         this.GEN_MAX = 2
 
         // creating the ship
@@ -156,6 +186,7 @@ class Play extends Phaser.Scene{
         // creates game over text off screen
         this.death = this.add.text(-100, -100, 'THOU HATH PERISHED\n Press space to return to menu', menuConfig).setOrigin(0.5);
 
+
     }
 
     update(){
@@ -226,24 +257,30 @@ class Play extends Phaser.Scene{
                 this.scene.start('menuScene');    
             }
         }
+
+        this.scoreLeft.text = this.score
     }
 
     // Creates cannonballs indefinitely, changing the rate at which they spawn
     createCannonballs(){
-        if(this.gameOver){
+        console.log(this.newCycle, this.generators)
+        if(this.gameOver || (this.newCycle && this.generators != 0)){
+            this.generators--
             return
         }
         this.cannonGroup.add((new Cannonball(this, this.cannonballVelocity)))
+        this.score += this.scoreIncrement
         // Sets the next delay step. As the delay gets less, the amount it is reduced by decreaces as well
         if(this.cannonballDelay > this.DELAY_MIN){
             this.cannonballDelay -= this.cannonballDelayStep
-            this.cannonballDelayStep = this.cannonballDelay / 20
+            this.cannonballDelayStep = this.cannonballDelay / this.cannonballDelayStepStep
         }else if(this.generators < this.GEN_MAX){
+            this.newCycle = false
             this.cannonballDelay *= 2
             this.generators += 1
             this.cannonballGenerator = this.time.addEvent({
                 delay: this.cannonballDelay + Phaser.Math.Between(0, this.cannonballDelay),
-                callback: this.simpleCannonballGenerator,
+                callback: this.createCannonballs,
                 callbackScope:this
             })
         }
@@ -253,19 +290,6 @@ class Play extends Phaser.Scene{
             callbackScope:this
         })
         console.log(this.generators, " ", this.cannonballDelay)
-    }
-
-    // A simpler cannonball generator, that does not change the difficulty as it spawns in balls
-    simpleCannonballGenerator(){
-        if(this.gameOver){
-            return
-        }
-        this.cannonGroup.add((new Cannonball(this, this.cannonballVelocity)))
-        this.cannonballGenerator = this.time.addEvent({
-            delay: this.cannonballDelay,
-            callback: this.createCannonballs,
-            callbackScope:this
-        })
     }
 
     // Ends the game, simple enough
@@ -324,5 +348,19 @@ class Play extends Phaser.Scene{
         this.rightDamagable = true
     }
 
+    // Ends a cycle
+    endCycle(){
+        if(this.gameOver){
+            return
+        }
+        this.scoreIncrement++
+        this.newCycle = true
+        this.cannonballVelocity = this.CANNONBALL_VELOICTY
+        this.cannonballDelay = this.CANNONBALL_DELAY
+        this.cannonballDelayStepStep = 150
+        this.velocity += 15
+        this.rightIntact = true
+        this.leftIntact = true
+    }
 
 }
