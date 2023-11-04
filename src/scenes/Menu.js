@@ -24,27 +24,43 @@ class Menu extends Phaser.Scene{
       this.add.text(w/2, h/2 - 150, 'AIRSHIP ANARCHY', menuConfig).setOrigin(0.5);
       this.add.text(w/2, h/2 - 50, 'Use arrow keys to move, dodge the cannonballs\nYour ship can survive one hit to each side\nGetting hit in the center means game over', menuConfig).setOrigin(0.5);
 
-      // Green menu text
+      // black menu text
       menuConfig.color = '#000'
       this.add.text(w/2, h/2 + 50, 'Press ← or → to start', menuConfig).setOrigin(0.5);
       this.add.text(w/2, h/2 + 150, 'Press ↑ or ↓ to view credits', menuConfig).setOrigin(0.5);
         
       // Key def (only needs arrow keys)
       cursors = this.input.keyboard.createCursorKeys()
+
+      // Create sound effects
+      this.menu = this.sound.add('menuSound', {
+          mute: false,
+          volume: .5,
+          rate: 1
+      })
+      this.start = this.sound.add('startSound', {
+        mute: false,
+        volume: .5,
+        rate: 1
+      })
     }
 
     update() {
         if (cursors.left.isDown) {
-          this.scene.start('playScene');    
+          this.scene.start('playScene');
+          this.start.play()
         }
         if (cursors.right.isDown) {
-          this.scene.start('playScene');    
+          this.scene.start('playScene');   
+          this.start.play() 
         }
         if (cursors.up.isDown) {
-          this.scene.start('creditsScene');    
+          this.scene.start('creditsScene');   
+          this.menu.play() 
         }
         if (cursors.down.isDown) {
-          this.scene.start('creditsScene');    
+          this.scene.start('creditsScene');
+          this.menu.play()
         }
     }
   }

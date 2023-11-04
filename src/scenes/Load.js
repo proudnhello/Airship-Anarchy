@@ -25,6 +25,11 @@ class Load extends Phaser.Scene {
         // load audio assets
         this.load.path = './assets/music/';
         this.load.audio('music', 'hotmk.mp3')
+        this.load.path = './assets/sfx/';
+        this.load.audio('menuSound', 'click.mp3')
+        this.load.audio('damageSound', 'smallExplosion.mp3')
+        this.load.audio('deathSound', 'bigExplosion.mp3')  
+        this.load.audio('startSound', 'start.mp3')
     }
 
     create() {

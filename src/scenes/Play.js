@@ -18,6 +18,19 @@ class Play extends Phaser.Scene{
             loop: true
         })
         this.music.play()
+        
+        // Create sfx
+        this.damageSound = this.sound.add('damageSound', {
+            mute: false,
+            volume: .5,
+            rate: 1,
+        })
+
+        this.deathSound = this.sound.add('deathSound', {
+            mute: false,
+            volume: .25,
+            rate: 1,
+        })
 
         this.gameOver = false;
         // This tracks the health of the left and right segments
@@ -257,6 +270,7 @@ class Play extends Phaser.Scene{
 
     // Ends the game, simple enough
     endGame(){
+        this.deathSound.play()
         this.gameOver = true
     }
 
@@ -272,6 +286,7 @@ class Play extends Phaser.Scene{
                     callback: this.leftInvincibility,
                     callbackScope: this
                 })
+                this.damageSound.play()
                 return false
             }else{
                 return true
@@ -291,6 +306,7 @@ class Play extends Phaser.Scene{
             })
             if(this.rightIntact){
                 this.rightIntact = false;
+                this.damageSound.play()
                 return false
             }else{
                 return true
