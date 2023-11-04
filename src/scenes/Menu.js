@@ -12,7 +12,7 @@ class Menu extends Phaser.Scene{
           fontFamily: 'Fantasy',
           fontSize: '28px',
           color: '#843605',
-          align: 'right',
+          align: 'center',
           padding: {
               top: 5,
               bottom: 5,
@@ -22,7 +22,7 @@ class Menu extends Phaser.Scene{
 
       // Menu text
       this.add.text(w/2, h/2 - 150, 'AIRSHIP ANARCHY', menuConfig).setOrigin(0.5);
-      this.add.text(w/2, h/2 - 50, 'Use arrow keys to move, dodge the cannonballs', menuConfig).setOrigin(0.5);
+      this.add.text(w/2, h/2 - 50, 'Use arrow keys to move, dodge the cannonballs\nYour ship can survive one hit to each side\nGetting hit in the center means game over', menuConfig).setOrigin(0.5);
 
       // Green menu text
       menuConfig.color = '#000'

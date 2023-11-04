@@ -107,6 +107,18 @@ class Play extends Phaser.Scene{
             })
         })
 
+        this.anims.create({
+            key:'destroyed',
+            frameRate:4,
+            repeat:-1,
+            frames: this.anims.generateFrameNames('airship', {
+                start: 13,
+                end:13,
+                zeroPad:3,
+                prefix:'airship'
+            })
+        })
+
         // sets up menu font
         let menuConfig = {
             fontFamily: 'Fantasy',
@@ -185,6 +197,7 @@ class Play extends Phaser.Scene{
             this.ship.setAcceleration(0)
             this.ship.setVelocity(0, 20)
             this.ship.setCollideWorldBounds(false)
+            this.ship.play('destroyed', true)
             if(cursors.space.isDown){
                 this.scene.start('menuScene');    
             }
