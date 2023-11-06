@@ -33,6 +33,66 @@ class Load extends Phaser.Scene {
     }
 
     create() {
+        // create the animations
+        this.anims.create({
+            key:'undamaged',
+            frameRate:4,
+            repeat:-1,
+            frames: this.anims.generateFrameNames('airship', {
+                start: 1,
+                end:3,
+                zeroPad:3,
+                prefix:'airship'
+            })
+        })
+
+        this.anims.create({
+            key:'left',
+            frameRate:4,
+            repeat:-1,
+            frames: this.anims.generateFrameNames('airship', {
+                start: 7,
+                end:9,
+                zeroPad:3,
+                prefix:'airship'
+            })
+        })
+
+        this.anims.create({
+            key:'right',
+            frameRate:4,
+            repeat:-1,
+            frames: this.anims.generateFrameNames('airship', {
+                start: 4,
+                end:6,
+                zeroPad:3,
+                prefix:'airship'
+            })
+        })
+
+        this.anims.create({
+            key:'both',
+            frameRate:4,
+            repeat:-1,
+            frames: this.anims.generateFrameNames('airship', {
+                start: 10,
+                end:12,
+                zeroPad:3,
+                prefix:'airship'
+            })
+        })
+
+        this.anims.create({
+            key:'destroyed',
+            frameRate:4,
+            repeat:-1,
+            frames: this.anims.generateFrameNames('airship', {
+                start: 13,
+                end:13,
+                zeroPad:3,
+                prefix:'airship'
+            })
+        })
         // go to Title scene
         this.scene.start('menuScene');
     }

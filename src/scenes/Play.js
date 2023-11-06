@@ -110,67 +110,6 @@ class Play extends Phaser.Scene{
             callbackScope:this
         })
 
-        // create the animations
-        this.anims.create({
-            key:'undamaged',
-            frameRate:4,
-            repeat:-1,
-            frames: this.anims.generateFrameNames('airship', {
-                start: 1,
-                end:3,
-                zeroPad:3,
-                prefix:'airship'
-            })
-        })
-
-        this.anims.create({
-            key:'left',
-            frameRate:4,
-            repeat:-1,
-            frames: this.anims.generateFrameNames('airship', {
-                start: 7,
-                end:9,
-                zeroPad:3,
-                prefix:'airship'
-            })
-        })
-
-        this.anims.create({
-            key:'right',
-            frameRate:4,
-            repeat:-1,
-            frames: this.anims.generateFrameNames('airship', {
-                start: 4,
-                end:6,
-                zeroPad:3,
-                prefix:'airship'
-            })
-        })
-
-        this.anims.create({
-            key:'both',
-            frameRate:4,
-            repeat:-1,
-            frames: this.anims.generateFrameNames('airship', {
-                start: 10,
-                end:12,
-                zeroPad:3,
-                prefix:'airship'
-            })
-        })
-
-        this.anims.create({
-            key:'destroyed',
-            frameRate:4,
-            repeat:-1,
-            frames: this.anims.generateFrameNames('airship', {
-                start: 13,
-                end:13,
-                zeroPad:3,
-                prefix:'airship'
-            })
-        })
-
         // sets up menu font
         let menuConfig = {
             fontFamily: 'Fantasy',
@@ -263,7 +202,6 @@ class Play extends Phaser.Scene{
 
     // Creates cannonballs indefinitely, changing the rate at which they spawn
     createCannonballs(){
-        console.log(this.newCycle, this.generators)
         if(this.gameOver || (this.newCycle && this.generators != 0)){
             this.generators--
             return
@@ -289,7 +227,6 @@ class Play extends Phaser.Scene{
             callback: this.createCannonballs,
             callbackScope:this
         })
-        console.log(this.generators, " ", this.cannonballDelay)
     }
 
     // Ends the game, simple enough
